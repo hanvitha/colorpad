@@ -1,0 +1,20 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    
+    table {
+    
+        width: 100%
+    }
+    </style>
+    
+    <h4>Coloring pad</h4>
+    <body>
+        <app-square *ngFor="let val of squares; let i = index" 
+            [buttonColor]="val" 
+            [value]="val"
+            (click)="changeColor(i)" >
+        </app-square>
+    </body>

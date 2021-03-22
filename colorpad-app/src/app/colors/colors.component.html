@@ -1,0 +1,5 @@
+<h4>Select the color of your backend pod</h4>
+<div [ngStyle]="{'background-color' : color}"  *ngFor="let color of colors">
+    <input type="radio" id={{color}} name=color value={{color}}  (change)=colorSelected(color)>
+    <label for={{color}}>{{color}}</label><br>
+</div>

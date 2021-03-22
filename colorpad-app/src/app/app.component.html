@@ -1,0 +1,7 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+
+<app-colors (selectedColor)="updateColor($event)"></app-colors>
+<app-board [selectedColor]="currentColor"></app-board>
+
+<router-outlet></router-outlet>
