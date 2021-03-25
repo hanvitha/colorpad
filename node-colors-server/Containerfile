@@ -1,4 +1,4 @@
-FROM ubi8/nodejs-14
+FROM registry.redhat.io/ubi8/nodejs-14
 MAINTAINER Aly Ibrahim<aly.ibrahim@gmail.com>
 ADD ./ .
 RUN npm install --production
