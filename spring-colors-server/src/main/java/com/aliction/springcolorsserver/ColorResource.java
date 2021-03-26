@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +26,14 @@ Logger logger = LoggerFactory.getLogger(ColorResource.class);
 
     @Value("${color}") 
     private String color;
-    @Value("${counter_url}")
-    private String counterURL;
 
-    private WebClient client = WebClient.create(counterURL);
+    // @Autowired
+    // private Environment env;
+    // String color = env.getProperty("color");
+
+    @Autowired
+    private WebClient client;
+
 
     @PostMapping(
         consumes = "application/json",
@@ -37,14 +42,13 @@ Logger logger = LoggerFactory.getLogger(ColorResource.class);
     @ResponseBody
     public ColorObject ColorConfirm(@RequestBody ColorObject colorObj) throws JsonProcessingException{
         logger.info("Color Confirm");
-        
+        // client = WebClient.create(counterURL);
         logger.info(mapper.writeValueAsString(colorObj));
         if (colorObj.getColor().equals(this.color)){
-            logger.info(counterURL);
+            // logger.info(counterURL);
 
-            Mono<String> counterResp = client.post().uri("/count/"+this.color).bodyValue(colorObj).header("Content-Type", "application/json")
+            Mono<String> counterResp = this.client.post().uri("/count/"+this.color).bodyValue(colorObj).header("Content-Type", "application/json")
             .exchangeToMono(response -> {
-                logger.info("Hi");
                 if(response.statusCode() == HttpStatus.OK){
                     logger.info("Counter OK");
                 }else{
@@ -53,11 +57,11 @@ Logger logger = LoggerFactory.getLogger(ColorResource.class);
                 return response.bodyToMono(String.class);
             });
             // logger.info(counterResp.toString());
-            counterResp.subscribe(logger::info);
+            counterResp.onErrorReturn("Couldn't connet to counter service").subscribe(logger::info);
             return new ColorObject(colorObj.getId(), colorObj.getBoardId(), "match");
         }else{
-            logger.info(colorObj.getColor() + " is not equal mycolor");
-            return null;
+            logger.error("The incoming color " + colorObj.getColor() + " is different from the configured server color " + color);
+            throw new ColorNotFoundException("The incoming color " + colorObj.getColor() + " is different from the configured server color " + color);
         }
     }
 
