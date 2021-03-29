@@ -52,7 +52,7 @@ Logger logger = LoggerFactory.getLogger(ColorResource.class);
                 if(response.statusCode() == HttpStatus.OK){
                     logger.info("Counter OK");
                 }else{
-                    logger.info("Counter Not OK");
+                    logger.error("Counter Not OK");
                 }
                 return response.bodyToMono(String.class);
             });
