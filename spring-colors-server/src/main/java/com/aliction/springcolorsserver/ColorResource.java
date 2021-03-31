@@ -24,7 +24,7 @@ public class ColorResource {
 Logger logger = LoggerFactory.getLogger(ColorResource.class);
     private ObjectMapper mapper = new ObjectMapper();
 
-    @Value("${color}") 
+    @Value("${COLOR}") 
     private String color;
 
     // @Autowired
@@ -41,36 +41,37 @@ Logger logger = LoggerFactory.getLogger(ColorResource.class);
         path = "confirm")
     @ResponseBody
     public ColorObject ColorConfirm(@RequestBody ColorObject colorObj) throws JsonProcessingException{
-        logger.info("Color Confirm");
+        // logger.info("Color Confirm");
         // client = WebClient.create(counterURL);
-        logger.info(mapper.writeValueAsString(colorObj));
+        logger.info("Received : " + mapper.writeValueAsString(colorObj));
         if (colorObj.getColor().equals(this.color)){
             // logger.info(counterURL);
 
             Mono<String> counterResp = this.client.post().uri("/count/"+this.color).bodyValue(colorObj).header("Content-Type", "application/json")
             .exchangeToMono(response -> {
-                if(response.statusCode() == HttpStatus.OK){
-                    logger.info("Counter OK");
-                }else{
-                    logger.error("Counter Not OK");
+                if(response.statusCode() != HttpStatus.OK){
+                //     logger.info("Counter OK");
+                // }else{                    
+                    logger.warn("Counter service is down");
+                    return null;
                 }
                 return response.bodyToMono(String.class);
             });
             // logger.info(counterResp.toString());
-            counterResp.onErrorReturn("Couldn't connet to counter service").subscribe(logger::info);
-            return new ColorObject(colorObj.getId(), colorObj.getBoardId(), "match");
+            counterResp.onErrorReturn("Couldn't connect to counter service").subscribe(item -> {logger.info(item + " is Counted");});
+            return new ColorObject(colorObj.getId(), colorObj.getSquareId(), colorObj.getBoardId(), "match");
         }else{
-            logger.error("The incoming color " + colorObj.getColor() + " is different from the configured server color " + color);
+            logger.warn("The service will only confirm " + color + " but received " + colorObj.getColor());
             throw new ColorNotFoundException("The incoming color " + colorObj.getColor() + " is different from the configured server color " + color);
         }
     }
 
-    @PostMapping(
-        consumes = "application/json",
-        produces = "application/json",
-        path = "/count/red")
-    @ResponseBody
-    public ColorObject Counter(@RequestBody ColorObject colorObj){
-        return new ColorObject(colorObj.getId(), colorObj.getBoardId(), "match");
-    }
+    // @PostMapping(
+    //     consumes = "application/json",
+    //     produces = "application/json",
+    //     path = "/count/red")
+    // @ResponseBody
+    // public ColorObject Counter(@RequestBody ColorObject colorObj){
+    //     return new ColorObject(colorObj.getId(), colorObj.getBoardId(), "match");
+    // }
 }
