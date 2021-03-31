@@ -17,24 +17,27 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/confirm', function(req, res, next) {
-  body = req.body;
-  console.log(body)
-  if (body.color == process.env.COLOR){
-    request(counter_url, body, (err, res, body) => {
+  inbody = req.body;
+
+  console.log("Received : " + inbody)
+  if (inbody.color == process.env.COLOR){
+    console.log(counter_url)
+    request.post({headers:{"Accept": "text/plain"},url: counter_url, body: inbody, json:true}, (err, res, body) => {
       if(err){
         console.log("Error counting " + res.statusCode)
         return
-      }else if (res.statusCode == 404){
+      }
+      else if (res.statusCode == 404){
         console.log("Counter service is down");
         return
       }
-      console.log(body + "Counted");
+      console.log(body + " is Counted");
     });
-    body.color = "match"
-    return res.json(body)
+    inbody.color = "match"
+    return res.json(inbody)
   }else{
     // res.status = 404
-    console.log("The service will only confirm " + process.env.COLOR + " but received " + body.color);
+    console.log("The service will only confirm " + process.env.COLOR + " but received " + inbody.color);
     return res.sendStatus(404)
   }
 
