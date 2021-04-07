@@ -19,12 +19,12 @@ router.get('/', function(req, res, next) {
 router.post('/confirm', function(req, res, next) {
   inbody = req.body;
 
-  console.log("Received : " + inbody)
+  console.log("Received : " + JSON.stringify(inbody))
   if (inbody.color == process.env.COLOR){
     console.log(counter_url)
     request.post({headers:{"Accept": "text/plain"},url: counter_url, body: inbody, json:true}, (err, res, body) => {
       if(err){
-        console.log("Error counting " + res.statusCode)
+        console.log("Error counting ")
         return
       }
       else if (res.statusCode == 404){
