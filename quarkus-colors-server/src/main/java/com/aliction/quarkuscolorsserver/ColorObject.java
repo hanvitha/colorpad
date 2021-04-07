@@ -1,20 +1,23 @@
 package com.aliction.quarkuscolorsserver;
 
-// import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.UUID;
 
-// @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ColorObject {
 
     private int id;
-    private int boardId;
+    private int squareId;
+    private UUID boardId;
     private String color;
 
     public ColorObject(){
 
     }
 
-    public ColorObject(int id, int boardId, String color) {
+    public ColorObject(int id, int squareId, UUID boardId, String color) {
         this.id = id;
+        this.squareId = squareId;
         this.boardId = boardId;
         this.color = color;
     }
@@ -25,12 +28,19 @@ public class ColorObject {
     public void setId(int id) {
         this.id = id;
     }
-    public int getBoardId() {
+    public int getSquareId() {
+        return squareId;
+    }
+    public void setSquareId(int squareId) {
+        this.squareId = squareId;
+    }
+    public UUID getBoardId() {
         return boardId;
     }
-    public void setBoardId(int boardId) {
+    public void setBoardId(UUID boardId) {
         this.boardId = boardId;
     }
+
     public String getColor() {
         return color;
     }
