@@ -1,20 +1,21 @@
 package com.aliction.springcolorsserver;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ColorObject {
 
     private int id;
     private int squareId;
-    private int boardId;
+    private UUID boardId;
     private String color;
 
     public ColorObject(){
 
     }
 
-    public ColorObject(int id, int squareId, int boardId, String color) {
+    public ColorObject(int id, int squareId, UUID boardId, String color) {
         this.id = id;
         this.squareId = squareId;
         this.boardId = boardId;
@@ -33,10 +34,10 @@ public class ColorObject {
     public void setSquareId(int squareId) {
         this.squareId = squareId;
     }
-    public int getBoardId() {
+    public UUID getBoardId() {
         return boardId;
     }
-    public void setBoardId(int boardId) {
+    public void setBoardId(UUID boardId) {
         this.boardId = boardId;
     }
 
