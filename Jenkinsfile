@@ -10,11 +10,9 @@ pipeline {
     }
 
     stage('Test') {
-        stage('Unit tests') {
           steps{
             dir('./colorpad-app/') { sh 'echo "All tests passed"' }
           }
-        }
     }
     stage('Build') {
       steps{
