@@ -13,12 +13,12 @@ pipeline {
       parallel {
         stage('Unit tests') {
           steps{
-            dir('./colorpad-app/') { sh 'ng test' }
+            dir('./colorpad-app/') { sh 'npm test' }
           }
         }
         stage('End to End tests') {
           steps{
-            dir('./colorpad-app/') { sh 'ng e2e' }
+            dir('./colorpad-app/') { sh 'npm e2e' }
           }
         }
       }
