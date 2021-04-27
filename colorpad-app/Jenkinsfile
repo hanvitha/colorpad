@@ -11,11 +11,6 @@ pipeline {
 
     stage('Test') {
       parallel {
-        stage('Static code analysis') {
-          steps{
-            dir('./colorpad-app/') { sh 'npm run-script tslint.json' }
-          }
-        }
         stage('Unit tests') {
           steps{
             dir('./colorpad-app/') { sh 'ng test' }
