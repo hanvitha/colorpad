@@ -6,6 +6,7 @@ pipeline {
     stage('Install') {
       steps{
         dir('./colorpad-app/'){ sh 'npm install' }
+      }
     }
 
     stage('Test') {
