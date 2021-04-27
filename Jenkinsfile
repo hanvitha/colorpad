@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    docker { image 'node:latest' }
+    label 'nodejs'
   }
   stages {
     stage('Install') {
