@@ -4,25 +4,34 @@ pipeline {
   }
   stages {
     stage('Install') {
-      steps { sh 'npm install' }
+      steps{
+        dir('./colorpad-app/'){ sh 'npm install' }
     }
 
     stage('Test') {
       parallel {
         stage('Static code analysis') {
+          dir('./colorpad-app/'){
             steps { sh 'npm run-script tslint.json' }
+          }
         }
         stage('Unit tests') {
+          dir('./colorpad-app/'){
             steps { sh 'ng test' }
+          }
         }
         stage('End to End tests') {
+          dir('./colorpad-app/'){
             steps { sh 'ng e2e' }
+          }
         }
       }
     }
 
     stage('Build') {
-      steps { sh 'npm run-script build' }
+      dir('./colorpad-app/'){
+        steps { sh 'npm run-script build' }
+      }
     }
   }
 }
