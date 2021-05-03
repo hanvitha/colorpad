@@ -7,7 +7,7 @@ pipeline {
     }
   }
   options {
-    timeout(time: 20, unit: 'MINUTES') 
+    timeout(time: 50, unit: 'MINUTES') 
   }
   stages {
     stage('preamble') {
@@ -52,7 +52,7 @@ pipeline {
             openshift.withCluster() {
                 openshift.withProject() {
                   def builds = openshift.selector("bc", templateName).related('builds')
-                  timeout(5) { 
+                  timeout(20) { 
                     builds.untilEach(1) {
                       return (it.object().status.phase == "Complete")
                     }
