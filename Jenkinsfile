@@ -16,6 +16,10 @@ pipeline {
                 openshift.withCluster() {
                     openshift.withProject() {
                         echo "Using project: ${openshift.project()}"
+                        openshift.selector("all", [ template : templateName ]).delete() 
+                        if (openshift.selector("secrets", templateName).exists()) { 
+                          openshift.selector("secrets", templateName).delete()
+                        }
                     }
                 }
             }
