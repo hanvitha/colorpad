@@ -1,8 +1,0 @@
-FROM registry.redhat.io/ubi8-minimal
-MAINTAINER Aly Ibrahim<aly.ibrahim@gmail.com>
-RUN microdnf update -y
-RUN microdnf install java-11-openjdk
-ADD target/ /opt/app-root/src
-RUN microdnf clean all
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", ""]
