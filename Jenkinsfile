@@ -1,5 +1,5 @@
 def templatePath = 'https://raw.githubusercontent.com/hanvitha/colorpad/main/pipeline.json' 
-def templateName = 'colorpad-app' 
+def templateName = 'colorpad-ui' 
 pipeline {
   agent {
     node {
@@ -16,9 +16,6 @@ pipeline {
                 openshift.withCluster() {
                     openshift.withProject() {
                         echo "Using project: ${openshift.project()}"
-                        openshift.selector("all", [ template : templateName ]).delete() 
-                        if (openshift.selector("secrets", templateName).exists()) { 
-                          openshift.selector("secrets", templateName).delete()
                         }
                     }
                 }
