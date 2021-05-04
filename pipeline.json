@@ -114,19 +114,9 @@
             "contextDir": "${CONTEXT_DIR}"
           },
           "strategy": {
-            "type": "Source",
-            "sourceStrategy": {
-              "from": {
-                "kind": "ImageStreamTag",
-                "namespace": "${NAMESPACE}",
-                "name": "nodejs:${NODEJS_VERSION}"
-              },
-              "env": [
-                {
-                  "name": "NPM_MIRROR",
-                  "value": "${NPM_MIRROR}"
-                }
-              ]
+            "type": "Docker",
+            "dockerStrategy": {
+                "dockerfilePath":"Containerfile"
             }
           },
           "output": {
