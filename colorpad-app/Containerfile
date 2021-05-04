@@ -2,7 +2,7 @@ FROM registry.redhat.io/ubi8/nodejs-14 as builder
 MAINTAINER Aly Ibrahim<aly.ibrahim@gmail.com>
 ADD ./ .
 RUN npm install
-CMD ng build
+RUN ng build
 
 FROM registry.redhat.io/ubi8/nginx-118
 MAINTAINER Aly Ibrahim<aly.ibrahim@gmail.com>
